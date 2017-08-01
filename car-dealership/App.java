@@ -1,55 +1,80 @@
 import java.io.Console;
+import java.util.List;
+import java.util.ArrayList;
 
 public class App {
-    public static void main(String[] args) {
-        Console console = System.console();
-        
-        Vehicle hatchback = new Vehicle();
-            hatchback.mYear = 1994;
-            hatchback.mBrand = "Subaru";
-            hatchback.mModel = "Legacy";
-            hatchback.mMiles = 170000;
-            hatchback.mPrice = 4000;
+  public static void main(String[] args) {
+    Console console = System.console();
 
-            Vehicle suv = new Vehicle();
-            suv.mYear = 2002;
-            suv.mBrand = "Ford";
-            suv.mModel = "Explorer";
-            suv.mMiles = 100000;
-            suv.mPrice = 7000;
+    Vehicle hatchback = new Vehicle(1994, "Subaru", "Legacy", 170000, 4000);
+    Vehicle suv = new Vehicle(2002, "Ford", "Explorer", 100000, 7000);
+    Vehicle sedan = new Vehicle(2015, "Toyota", "Camry", 50000, 30000);
+    Vehicle truck = new Vehicle(1999, "Ford", "Ranger", 100000, 4000);
+    Vehicle crossover = new Vehicle(1998, "Toyota", "Rav-4", 200000, 3500);
 
-            Vehicle sedan = new Vehicle();
-            sedan.mYear = 2015;
-            sedan.mBrand = "Toyota";
-            sedan.mModel = "Camry";
-            sedan.mMiles = 50000;
-            sedan.mPrice = 30000;
+    List<Vehicle> allVehicles = new ArrayList<Vehicle>();
+    allVehicles.add(hatchback);
+    allVehicles.add(suv);
+    allVehicles.add(sedan);
+    allVehicles.add(truck);
+    allVehicles.add(crossover);
+    
+    boolean programRunning = true;
+    while(programRunning){
+      System.out.println("Welcome to our car dealership. What would you like to do? Enter one of the following options: All Vehicles, Search Price or Add Vehicle or Exit");
+    String navigationChoice = console.readLine();
 
-            Vehicle truck = new Vehicle();
-            truck.mYear = 1999;
-            truck.mBrand = "Ford";
-            truck.mModel = "Ranger";
-            truck.mMiles = 100000;
-            truck.mPrice = 4000;
-            
-            Vehicle crossover = new Vehicle();
-            crossover.mYear = 1998;
-            crossover.mBrand = "Toyota";
-            crossover.mModel = "Rav-4";
-            crossover.mMiles = 200000;
-            crossover.mPrice = 3500;
-            
-            Vehicle[] allVehicles = {hatchback, suv, sedan, truck, crossover};
-            System.out.println("All vehicles: ");
-            
-            for(Vehicle individualVehicle : allVehicles) {
-              System.out.println( "----------------------" );
-              System.out.println( individualVehicle.mYear );
-              System.out.println( individualVehicle.mBrand );
-              System.out.println( individualVehicle.mModel );
-              System.out.println( individualVehicle.mMiles );
-              System.out.println( individualVehicle.mPrice );
-            }
-
+    if (navigationChoice.equals("All Vehicles")){
+      for ( Vehicle individualVehicle : allVehicles ) {
+          System.out.println( "----------------------" );
+          System.out.println( individualVehicle.mYear );
+          System.out.println( individualVehicle.mBrand );
+          System.out.println( individualVehicle.mModel );
+          System.out.println( individualVehicle.mMiles );
+          System.out.println( individualVehicle.mPrice );
+      }
+    } else if (navigationChoice.equals("Search Price")){
+        System.out.println("What is your maximum budget for a vehicle?");
+        String stringUserMaxBudget = console.readLine();
+        int userMaxBudget = Integer.parseInt(stringUserMaxBudget);
+        System.out.println("Alright, here's what we have in your price range:");
+        for ( Vehicle individualVehicle : allVehicles ) {
+          if (individualVehicle.worthBuying(userMaxBudget)){
+            System.out.println( "----------------------" );
+            System.out.println( individualVehicle.mYear );
+            System.out.println( individualVehicle.mBrand );
+            System.out.println( individualVehicle.mModel );
+            System.out.println( individualVehicle.mMiles );
+            System.out.println( individualVehicle.mPrice );
+          }
+        }
+    } else if (navigationChoice.equals("Add Vehicle")){
+          System.out.println("Alright, let's add a vehicle! What year was this vehicle made?");
+          int userVehicleYear = Integer.parseInt(console.readLine());
+          System.out.println("Great! What make or brand is the vehicle?");
+          String userVehicleBrand = console.readLine();
+          System.out.println("Got it! What model is it?");
+          String userVehicleModel = console.readLine();
+          System.out.println("And how many miles does it have on it?");
+          int userVehicleMiles = Integer.parseInt(console.readLine());
+          System.out.println("Finally, what's its price?");
+          int userVehiclePrice = Integer.parseInt(console.readLine());
+          Vehicle userVehicle = new Vehicle(userVehicleYear, userVehicleBrand, userVehicleModel, userVehicleMiles, userVehiclePrice);
+          allVehicles.add(userVehicle);
+          
+          System.out.println("Alright, here's your new vehicle:");
+          System.out.println( "----------------------" );
+          System.out.println( userVehicle.mYear );
+          System.out.println( userVehicle.mBrand );
+          System.out.println( userVehicle.mModel );
+          System.out.println( userVehicle.mMiles );
+          System.out.println( userVehicle.mPrice );
+          
+    } else if (navigationChoice.equals("Exit")){
+        programRunning = false;
+      } else {
+        System.out.println("I'm sorry, we don't recognize your input");
+      }
+      }
     }
-}
+  }
